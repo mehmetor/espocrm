@@ -1,16 +1,7 @@
 [phases.setup]
-# Railway'in varsayılan paketlerine ek olarak bzip2 ve Apache sunucusunu
-# açıkça ekleyerek komutların (a2enmod, a2ensite vb.) bulunmasını garantile.
-nixPkgs = ["...", "bzip2", "apacheHttpd"]
+# Railway'in varsayılan paketlerine sadece bzip2 ekle.
+# Bu, en başta karşılaştığımız phantomjs hatasını çözer.
+nixPkgs = ["...", "bzip2"]
 
-# Apache'yi EspoCRM için yapılandıran komutları çalıştır.
-cmds = [
-  "a2enmod rewrite",
-  "cp espocrm.conf /etc/apache2/sites-available/espocrm.conf",
-  "a2ensite espocrm.conf",
-  "a2dissite 000-default.conf"
-]
-
-[start]
-# Uygulamayı başlatmak için Apache'yi ön planda çalıştır.
-cmd = "apache2-foreground"
+# Varsayılan Nginx yapılandırmasını kendi özel yapılandırmamızla değiştir.
+cmds = ["cp default.conf /etc/nginx/conf.d/default.conf"]
