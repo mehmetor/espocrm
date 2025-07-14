@@ -1,2 +1,14 @@
 [phases.setup]
+# Varsayılan paketlere ek olarak bzip2 paketini kur.
 nixPkgs = ["...", "bzip2"]
+# Apache'yi EspoCRM için yapılandıran komutları çalıştır.
+cmds = [
+  "a2enmod rewrite",
+  "cp espocrm.conf /etc/apache2/sites-available/espocrm.conf",
+  "a2ensite espocrm.conf",
+  "a2dissite 000-default.conf"
+]
+
+[start]
+# Uygulamayı başlatmak için Apache'yi ön planda çalıştır.
+cmd = "apache2-foreground"
