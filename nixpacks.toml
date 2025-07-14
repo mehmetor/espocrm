@@ -1,2 +1,0 @@
-[phases.setup]
-nixPkgs = ["bzip2", "composer"]
