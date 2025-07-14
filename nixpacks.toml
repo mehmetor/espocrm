@@ -1,6 +1,8 @@
 [phases.setup]
-# Varsayılan paketlere ek olarak bzip2 paketini kur.
-nixPkgs = ["...", "bzip2"]
+# Railway'in varsayılan paketlerine ek olarak bzip2 ve Apache sunucusunu
+# açıkça ekleyerek komutların (a2enmod, a2ensite vb.) bulunmasını garantile.
+nixPkgs = ["...", "bzip2", "apacheHttpd"]
+
 # Apache'yi EspoCRM için yapılandıran komutları çalıştır.
 cmds = [
   "a2enmod rewrite",
