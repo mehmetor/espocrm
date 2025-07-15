@@ -1,11 +1,12 @@
 [phases.setup]
 # Railway'in varsayılan paketlerine sadece bzip2 ekle.
-# Bu, en başta karşılaştığımız phantomjs hatasını çözer.
 nixPkgs = ["...", "bzip2"]
 
-# Zamanlama sorununu çözmek için önce hedef dizini oluştur,
-# sonra varsayılan Nginx yapılandırmasını kendi özel yapılandırmamızla değiştir.
+# Nginx'i endüstri standardı yöntemle yapılandır:
+# 1. Varsayılan siteyi devre dışı bırak.
+# 2. Kendi sitemizi etkinleştir.
 cmds = [
-  "mkdir -p /etc/nginx/conf.d",
-  "cp default.conf /etc/nginx/conf.d/default.conf"
+  "rm -f /etc/nginx/sites-enabled/default",
+  "cp espocrm.conf /etc/nginx/sites-available/espocrm.conf",
+  "ln -s /etc/nginx/sites-available/espocrm.conf /etc/nginx/sites-enabled/espocrm.conf"
 ]
