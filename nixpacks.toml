@@ -1,0 +1,14 @@
+# nixpacks.toml
+
+[phases.setup]
+# Define the Nix packages to install
+# EspoCRM requires several PHP extensions
+nixPkgs = ["php82", "php82Packages.composer", "php82Packages.gd", "php82Packages.zip", "php82Packages.imap", "php82Packages.pdo_mysql", "php82Packages.exif", "php82Packages.fileinfo", "php82Packages.json", "php82Packages.openssl", "php82Packages.bzip2", "php82Packages.ctype", "php82Packages.iconv", "php82Packages.session", "php82Packages.simplexml", "php82Packages.tokenizer", "php82Packages.xml", "php82Packages.xmlwriter", "php82Packages.mbstring", "nginx"]
+
+[phases.install]
+# Install composer dependencies
+cmds = ["composer install --no-dev --optimize-autoloader"]
+
+[start]
+# Start PHP-FPM and Nginx
+cmd = "php-fpm & nginx -c /app/nginx.conf -g 'daemon off;'"
