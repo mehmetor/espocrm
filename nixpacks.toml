@@ -1,14 +1,46 @@
 # nixpacks.toml
 
+# EspoCRM requires Node.js >= 17 and PHP >= 8.2
+providers = ["node@18", "php@8.2"]
+
 [phases.setup]
-# Define the Nix packages to install
-# EspoCRM requires several PHP extensions
-nixPkgs = ["php82", "php82Packages.composer", "php82Packages.gd", "php82Packages.zip", "php82Packages.imap", "php82Packages.pdo_mysql", "php82Packages.exif", "php82Packages.fileinfo", "php82Packages.json", "php82Packages.openssl", "php82Packages.bzip2", "php82Packages.ctype", "php82Packages.iconv", "php82Packages.session", "php82Packages.simplexml", "php82Packages.tokenizer", "php82Packages.xml", "php82Packages.xmlwriter", "php82Packages.mbstring", "nginx"]
+# Add all required system packages and PHP extensions.
+# This includes packages for building assets and running the server.
+nixPkgs = [
+    "pkgs.nginx",
+    "pkgs.grunt",
+    "pkgs.php82Packages.composer",
+    "pkgs.php82Packages.openssl",
+    "pkgs.php82Packages.json",
+    "pkgs.php82Packages.zip",
+    "pkgs.php82Packages.gd",
+    "pkgs.php82Packages.mbstring",
+    "pkgs.php82Packages.xml",
+    "pkgs.php82Packages.dom",
+    "pkgs.php82Packages.curl",
+    "pkgs.php82Packages.exif",
+    "pkgs.php82Packages.pdo",
+    "pkgs.php82Packages.ctype",
+    "pkgs.php82Packages.fileinfo",
+    "pkgs.php82Packages.bcmath",
+    "pkgs.php82Packages.ldap",
+    "pkgs.php82Packages.pdo_mysql",
+    "pkgs.php82Packages.pdo_pgsql",
+    "pkgs.bzip2"
+]
 
 [phases.install]
-# Install composer dependencies
-cmds = ["composer install --no-dev --optimize-autoloader"]
+# Install both Node.js and PHP dependencies.
+cmds = [
+    "npm install",
+    "composer install --no-dev --optimize-autoloader"
+]
+
+[phases.build]
+# Build the frontend assets using Grunt.
+cmds = ["grunt"]
 
 [start]
-# Start PHP-FPM and Nginx
-cmd = "php-fpm & nginx -c /app/nginx.conf -g 'daemon off;'"
+# Start PHP-FPM and Nginx in the foreground.
+# Nginx is configured to use the nginx.conf file from the repository.
+cmd = "php-fpm -D && nginx -c /app/nginx.conf -g 'daemon off;'"
