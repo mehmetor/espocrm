@@ -3,9 +3,11 @@
 nixPkgs = ["...", "bzip2"]
 
 # Nginx'i endüstri standardı yöntemle yapılandır:
+# 0. Zamanlama sorunlarını önlemek için gerekli dizinleri oluştur.
 # 1. Varsayılan siteyi devre dışı bırak.
 # 2. Kendi sitemizi etkinleştir.
 cmds = [
+  "mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled",
   "rm -f /etc/nginx/sites-enabled/default",
   "cp espocrm.conf /etc/nginx/sites-available/espocrm.conf",
   "ln -s /etc/nginx/sites-available/espocrm.conf /etc/nginx/sites-enabled/espocrm.conf"
